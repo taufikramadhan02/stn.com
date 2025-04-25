@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">FoodShop</div>
+                <div class="user-actions">
+                    <span id="history-icon" onclick="openOrderHistory()">📋</span>
+                    <span id="cart-icon" onclick="openCartModal()">🛒</span>
+                    <span id="login-icon" onclick="openLoginModal()">🔐</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="order-type">
+            <div class="order-btn active" data-type="takeaway">Takeaway</div>
+            <div class="order-btn" data-type="dine-in">Dine In</div>
+            <div class="order-btn" data-type="delivery">Delivery</div>
+        </div>
+
+        <div class="categories">
+            <div class="category active" data-category="all">All</div>
+            <div class="category" data-category="main">Main Course</div>
+            <div class="category" data-category="sides">Sides</div>
+            <div class="category" data-category="desserts">Desserts</div>
+            <div class="category" data-category="drinks">Drinks</div>
+        </div>
+
+        <div class="menu-items" id="menu-items-container">
+            <!-- Menu items will be dynamically added here -->
+        </div>
+    </div>
+
+    <div class="cart">
+        <div class="cart-info">
+            <div class="cart-count">0</div>
+            <div class="cart-total">Total: $0.00</div>
+        </div>
+        <button class="checkout-btn" onclick="openCartModal()">Checkout</button>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCartModal()">&times;</span>
+            <h2>Your Order</h2>
+            <div class="cart-items" id="cart-items-list">
+                <!-- Cart items will be added here -->
+            </div>
+            <div class="total">
+                <span>Total:</span>
+                <span id="modal-total">$0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="proceedToPayment()">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePaymentModal()">&times;</span>
+            <h2>Payment</h2>
+            <div class="payment-form">
+                <div class="form-group">
+                    <label for="card-name">Name on Card</label>
+                    <input type="text" id="card-name" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="expiry-date">Expiry Date</label>
+                        <input type="text" id="expiry-date" placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div class="form-group half">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="3">
+                    </div>
+                </div>
+                <div class="payment-methods">
+                    <h3>Payment Method</h3>
+                    <div class="payment-options">
+                        <div class="payment-option active">
+                            <input type="radio" id="credit-card" name="payment-method" checked>
+                            <label for="credit-card">Credit Card</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="debit-card" name="payment-method">
+                            <label for="debit-card">Debit Card</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="paypal" name="payment-method">
+                            <label for="paypal">PayPal</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="checkout-btn" onclick="placeOrder()">Pay Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success-content">
+            <h2>Payment Successful!</h2>
+            <div class="success-icon">✓</div>
+            <p>Your order has been placed successfully.</p>
+            <p>Order number: <span id="order-number"></span></p>
+            <button class="checkout-btn" onclick="closeSuccessModal()">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Order History Modal -->
+    <div id="orderHistoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderHistory()">&times;</span>
+            <h2>Order History</h2>
+            <div class="order-history-list" id="order-history-list">
+                <!-- Order history will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderDetails()">&times;</span>
+            <h2>Order Details</h2>
+            <div class="order-details-content" id="order-details-content">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="text" id="loginEmail" placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="text" id="loginPassword" placeholder="********">
+                </div>
+                <button class="checkout-btn" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
